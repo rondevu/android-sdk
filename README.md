@@ -18,6 +18,7 @@ To install Rondevu, in your `build.gradle`:
  }
 ```
 
+
 In your `Activity` or `Fragment` class where you want to listen to or perform `Action`:
 
 ```java
@@ -39,6 +40,7 @@ public class YourActivity implements Node {
 }
 ```
 
+
 Nodes listening for `Action` would extend the following method:
 
 ```java
@@ -48,6 +50,7 @@ public onRequest(Action relevantAction, Object requestObject) {
 	Rondevu.respond(releavantAction, responseObject);
 }
 ```
+
 
 Nodes wanting to perform `Action` would extend the following method:
 
