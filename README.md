@@ -1,10 +1,12 @@
 # Rondevu
 
-A proximity information exchange library for your smartphone.
+Rondevu is transforming your physical world. It is doing so by enabling your app to exchange meaningful information with other smart devices closeby which contain your app.
 
 ## The Basics
 
-Rondevu transforms your physical world by allowing closeby devices to exhange meaningful information.
+* Each device in the Rondevu world is a *Node*. Nodes of the same app can interact with other nodes which are closeby. 
+* To be visible to other nodes in the proximity, Nodes would declare that they are available to a certain *Action*. 
+* To interact with other nodes, Nodes would *perform an Action* on nearby nodes and wait for a *response*.
 
 ## Getting Started
 
@@ -14,22 +16,9 @@ To install Rondevu, in your `build.gradle`:
  dependencies {
    compile 'com.rondevu.android:android-sdk:0.1'
  }
-``` 
-
-In your `Application` class:
-
-```java
-public class YourApplication extends Application {
-
-  @Override public void onCreate() {
-    super.onCreate();
-    Rondevu.install(this);
-    // Normal app init code...
-  }
-}
 ```
 
-In your `Activity` or `Fragment` class where you want to listen to updates from nearby nodes, instantiate Rondevu:
+In your `Activity` or `Fragment` class where you want to listen to or perform `Action`:
 
 ```java
 public class YourActivity implements Node {
@@ -37,10 +26,12 @@ public class YourActivity implements Node {
   @Override public void onCreate() {
     super.onCreate();
 
+    // Declare the interested Action
+    Action interestedAction = Action.create("Unique-ID");
+
     // Instantiate Rondevu according to requirement
     Rondevu.startNode(this)
-    	.alwaysOn(false)
-    	.listenForAction("relevant-action")
+    	.listenFor(interestedAction) // optional
     	.initialize();
     
     // Remaining boot code
@@ -48,7 +39,7 @@ public class YourActivity implements Node {
 }
 ```
 
-Nodes listening for `Action`s would extend the following method:
+Nodes listening for `Action` would extend the following method:
 
 ```java
 @Override
@@ -58,7 +49,7 @@ public onRequest(Action relevantAction, Object requestObject) {
 }
 ```
 
-Nodes wanting to perform `Action`s would extend the following method:
+Nodes wanting to perform `Action` would extend the following method:
 
 ```java
 Rondevu.perform(relevantAction);
